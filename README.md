@@ -32,9 +32,11 @@ A nationwide vehicle breakdown and repair connector. Customers find a partner ga
 ## Setup
 
 1. Requires PHP 7.4+ and MySQL/MariaDB (e.g. via XAMPP).
-2. Place this folder under your web server's document root.
-3. Create a database and import `breakdown_system.sql`, it creates every table and seeds realistic starting data (garages, mechanics, brands, parts, services, demo bookings/feedback/chat, and a default admin account).
-4. Open `config/db.php` and set your database host, name, username, and password.
+2. Place this folder anywhere under your web server's document root, any folder name or nesting works, no path needs editing.
+3. Import `breakdown_system.sql`. It creates the `vehicle_care` database itself (no need to create an empty one first) and seeds realistic starting data: garages, mechanics, brands, parts, services, demo bookings/feedback/chat, and a default admin account.
+   - Command line: `mysql -u root < breakdown_system.sql`
+   - phpMyAdmin: open the Import tab at the server level (no database selected) and import the file directly.
+4. If your database username/password isn't the default XAMPP setup (`root` with no password), update them in `config/db.php`. Everything else, including the site's own URL, is detected automatically.
 5. Visit the site root for the public pages, and `/admin/login.php` for the admin panel.
 
 A default admin account is included in the seed data. **Change its password immediately after first login** via the profile menu (top right of the admin dashboard) → My Profile → Change Password.

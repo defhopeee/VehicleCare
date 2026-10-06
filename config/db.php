@@ -15,9 +15,20 @@ try {
 }
 
 define('SITE_NAME', 'VehicleCare');
-// Set to match where this actually sits under htdocs on this machine
-// (Projects/vehicle_care kc/vehicle_care), not web root.
-define('SITE_URL', 'http://localhost/Projects/vehicle_care%20kc/vehicle_care');
+
+// Auto-detects the site's own URL from where this file actually sits on
+// disk relative to the web server's document root, so the project works
+// unmodified no matter what folder it's installed into or what domain it's
+// served from, no hardcoded path to edit by hand.
+$docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] ?? ''), '/');
+$projectRoot = rtrim(str_replace('\\', '/', dirname(__DIR__)), '/');
+$relativePath = ($docRoot && strpos($projectRoot, $docRoot) === 0)
+    ? substr($projectRoot, strlen($docRoot))
+    : '';
+$encodedPath = implode('/', array_map('rawurlencode', explode('/', $relativePath)));
+$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+define('SITE_URL', $scheme . '://' . $host . $encodedPath);
 define('UPLOAD_DIR', dirname(__DIR__) . '/assets/uploads/');
 define('UPLOAD_URL', SITE_URL . '/assets/uploads/');
 
